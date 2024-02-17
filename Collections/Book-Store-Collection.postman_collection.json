@@ -1,0 +1,580 @@
+{
+	"info": {
+		"_postman_id": "4db298f0-5aa8-4f52-abbc-5fc4cde351f7",
+		"name": "Book-Store-Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9195855",
+		"_collection_link": "https://universal-rocket-455604.postman.co/workspace/Team-Workspace~690cbf78-b554-444a-8ec8-5817e977e6b0/collection/9195855-4db298f0-5aa8-4f52-abbc-5fc4cde351f7?action=share&source=collection_link&creator=9195855"
+	},
+	"item": [
+		{
+			"name": "0.Generate_Token",
+			"item": [
+				{
+					"name": "TC_01_Generate_Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.environment.get(\"jsonResponseData\").token);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the Token Generation Status\", function () {",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").status).to.eql(\"Success\");",
+									"});",
+									"",
+									"pm.test(\"Verify the Authorization Status\", function () {",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").result).to.eql(\"User authorized successfully.\");",
+									"});",
+									"",
+									"var tokenSchema = {",
+									"    \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"token\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"expires\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"status\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"result\": {",
+									"            \"type\": \"string\"",
+									"        }",
+									"    },",
+									"    \"required\": [",
+									"        \"token\",",
+									"        \"expires\",",
+									"        \"status\",",
+									"        \"result\"",
+									"    ]",
+									"};",
+									"",
+									"pm.test('Verify if Token Schema is valid', function () {",
+									"    pm.expect(tv4.validate(pm.environment.get(\"jsonResponseData\"), tokenSchema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"{{user_name}}\",\r\n    \"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ENV}}/Account/v1/GenerateToken",
+							"host": [
+								"{{ENV}}"
+							],
+							"path": [
+								"Account",
+								"v1",
+								"GenerateToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1.Get_Books_List_Before_Adding",
+			"item": [
+				{
+					"name": "TC_01_Get_Books_List_Before_Adding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var booksSchema = {",
+									"    \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"userId\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"username\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"books\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": [",
+									"                {",
+									"                    \"type\": \"object\",",
+									"                    \"properties\": {",
+									"                        \"isbn\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"title\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"subTitle\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"author\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"publish_date\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"publisher\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"pages\": {",
+									"                            \"type\": \"integer\"",
+									"                        },",
+									"                        \"description\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"website\": {",
+									"                            \"type\": \"string\"",
+									"                        }",
+									"                    },",
+									"                    \"required\": [",
+									"                        \"isbn\",",
+									"                        \"title\",",
+									"                        \"subTitle\",",
+									"                        \"author\",",
+									"                        \"publish_date\",",
+									"                        \"publisher\",",
+									"                        \"pages\",",
+									"                        \"description\",",
+									"                        \"website\"",
+									"                    ]",
+									"                }",
+									"            ]",
+									"        }",
+									"    },",
+									"    \"required\": [",
+									"        \"userId\",",
+									"        \"username\",",
+									"        \"books\"",
+									"    ]",
+									"};",
+									"",
+									"pm.test('Verify if Books Schema is valid', function () {",
+									"    pm.expect(tv4.validate(pm.environment.get(\"jsonResponseData\"), booksSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Verify the values in response body\", function () {",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").userId).to.eql(pm.environment.get(\"user_id\"));",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").username).to.eql(pm.environment.get(\"user_name\"));",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").books.length).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ENV}}/Account/v1/User/{{user_id}}",
+							"host": [
+								"{{ENV}}"
+							],
+							"path": [
+								"Account",
+								"v1",
+								"User",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2.Add_Book",
+			"item": [
+				{
+					"name": "TC_01_Add_Book_To_User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var addedBookSchema = {",
+									"    \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"books\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": [",
+									"                {",
+									"                    \"type\": \"object\",",
+									"                    \"properties\": {",
+									"                        \"isbn\": {",
+									"                            \"type\": \"string\"",
+									"                        }",
+									"                    },",
+									"                    \"required\": [",
+									"                        \"isbn\"",
+									"                    ]",
+									"                }",
+									"            ]",
+									"        }",
+									"    },",
+									"    \"required\": [",
+									"        \"books\"",
+									"    ]",
+									"};",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(tv4.validate(pm.environment.get(\"jsonResponseData\"), addedBookSchema)).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"{{user_id}}\",\r\n  \"collectionOfIsbns\": [\r\n    {\r\n        \"isbn\": \"{{book_isbn}}\"\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ENV}}/BookStore/v1/Books",
+							"host": [
+								"{{ENV}}"
+							],
+							"path": [
+								"BookStore",
+								"v1",
+								"Books"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4.Get_Books_List_After_Adding",
+			"item": [
+				{
+					"name": "TC_01_Get_Books_List_After_Adding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var getBooksSchema = {",
+									"    \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"userId\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"username\": {",
+									"            \"type\": \"string\"",
+									"        },",
+									"        \"books\": {",
+									"            \"type\": \"array\",",
+									"            \"items\": [",
+									"                {",
+									"                    \"type\": \"object\",",
+									"                    \"properties\": {",
+									"                        \"isbn\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"title\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"subTitle\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"author\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"publish_date\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"publisher\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"pages\": {",
+									"                            \"type\": \"integer\"",
+									"                        },",
+									"                        \"description\": {",
+									"                            \"type\": \"string\"",
+									"                        },",
+									"                        \"website\": {",
+									"                            \"type\": \"string\"",
+									"                        }",
+									"                    },",
+									"                    \"required\": [",
+									"                        \"isbn\",",
+									"                        \"title\",",
+									"                        \"subTitle\",",
+									"                        \"author\",",
+									"                        \"publish_date\",",
+									"                        \"publisher\",",
+									"                        \"pages\",",
+									"                        \"description\",",
+									"                        \"website\"",
+									"                    ]",
+									"                }",
+									"            ]",
+									"        }",
+									"    },",
+									"    \"required\": [",
+									"        \"userId\",",
+									"        \"username\",",
+									"        \"books\"",
+									"    ]",
+									"};",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(tv4.validate(pm.environment.get(\"jsonResponseData\"), getBooksSchema)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Verify if books list is zero for the user before adding book\", function () {",
+									"    pm.expect(pm.environment.get(\"jsonResponseData\").books[0].isbn).to.eql(pm.environment.get(\"book_isbn\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ENV}}/Account/v1/User/{{user_id}}",
+							"host": [
+								"{{ENV}}"
+							],
+							"path": [
+								"Account",
+								"v1",
+								"User",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3.Delete_Added_Book",
+			"item": [
+				{
+					"name": "TC_01_Delete_Book_From_User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"isbn\": \"{{book_isbn}}\",\r\n  \"userId\": \"{{user_id}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://bookstore.toolsqa.com/BookStore/v1/Book",
+							"protocol": "https",
+							"host": [
+								"bookstore",
+								"toolsqa",
+								"com"
+							],
+							"path": [
+								"BookStore",
+								"v1",
+								"Book"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.environment.set(\"user_id\", \"37a15135-930a-4d5c-a994-4374621867cc\");",
+					"pm.environment.set(\"user_name\", \"sdetRaghuQA\");",
+					"pm.environment.set(\"password\", \"Sde@1994\");",
+					"pm.environment.set(\"book_isbn\", \"9781449331818\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//Setting response data globally",
+					"console.log(pm.response.code)",
+					"if (pm.response.code === 200 || pm.response.status === 201) {",
+					"    pm.environment.set(\"jsonResponseData\", pm.response.json());",
+					"}",
+					""
+				]
+			}
+		}
+	]
+}

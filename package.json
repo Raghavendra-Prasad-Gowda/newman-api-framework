@@ -1,0 +1,24 @@
+{
+  "name": "newman-api-framework",
+  "version": "1.0.0",
+  "description": "This is a API Automation Framework based on newman node library",
+  "main": "index.js",
+  "scripts": {
+    "api:tests": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raghavendra-Prasad-Gowda/newman-api-framework.git"
+  },
+  "author": "Raghavendra Prasad R",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raghavendra-Prasad-Gowda/newman-api-framework/issues"
+  },
+  "homepage": "https://github.com/Raghavendra-Prasad-Gowda/newman-api-framework#readme",
+  "dependencies": {
+    "newman": "^6.1.1",
+    "newman-reporter-csv": "^1.3.0",
+    "newman-reporter-htmlextra": "^1.23.0"
+  }
+}
